@@ -13,8 +13,8 @@ M@HW&QBm#R%K8$NDEhgk9dPSb60pFOXwAqGUZ4*n5auYJ2TVf3LCx?zIselojy1rit!()v7[]c\}{=/"
 
 效果图：
 
-![test](D:\2019Winter Vacation\Ascii-Generator\test.jpg)
+![test](test.jpg)
 
-![sample](D:\2019Winter Vacation\Ascii-Generator\sample.png)
+![sample](sample.png)
 
 还是可以的...\_(:з」∠)\_
