@@ -19,13 +19,13 @@ def getAverageGreyInImage(image):
 def getGreyOrderedAscii():
     greyGroup = {}
     for i in ASCII_GROUP:
-        image = Image.new('RGB',(IMAGE_WIDTH,IMAGE_HEIGHT),(255,255,255,255))
+        image = Image.new('RGB',(IMAGE_WIDTH,IMAGE_HEIGHT),(255,255,255))
         drawer = ImageDraw.Draw(image)
         font = ImageFont.truetype('C:\\Windows\\Fonts\\simsun.ttc',FONT_SIZE,0)
         fill = (0,0,0)
         drawer.text([0,0],i,font = font,fill = fill)
         greyGroup[i] = getAverageGreyInImage(image)
-    greyGroup = sorted(greyGroup.items(), key = lambda x : x[1])
+    greyGroup = sorted(greyGroup.items(), key = lambda x : x[1])#sort by grey
     resultOrder = ''
     for i in greyGroup:
         resultOrder = resultOrder + i[0]
