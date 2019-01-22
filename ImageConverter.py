@@ -4,12 +4,12 @@ __author__ = 'ZYF'
 import Ascii
 from PIL import Image, ImageDraw, ImageFont
 
-DEFAULT_BLOCK_WIDTH = 5
-DEFAULT_BLOCK_HEIGHT = 10
+DEFAULT_BLOCK_WIDTH = 10
+DEFAULT_BLOCK_HEIGHT = 20
 GREY_ORDERED_ASCII = Ascii.getGreyOrderedAscii()
 
 def fromImageToAsciiArray(image, blockShape=(DEFAULT_BLOCK_HEIGHT, DEFAULT_BLOCK_WIDTH)):
-    height, width = image.size
+    width, height = image.size
     blockHeight, blockWidth = blockShape
     asciiResult = ''
     for j in range(0, int(height / blockHeight)):
