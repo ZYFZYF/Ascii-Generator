@@ -4,7 +4,7 @@ __author__ = 'ZYF'
 from PIL import Image, ImageDraw, ImageFont
 import numpy
 
-GREY_ORDER = "$@B%8&WM#*oahkbdpqwmZO0QLCJUYXzcvunxrjft/\\|()1{}[]?-_+~<>i!lI;:,\"^`'."
+GREY_ORDER = "$@B%8&WM#*oahkbdpqwmZO0QLCJUYXzcvunxrjft/\\|()1{}[]?-_+~<>i!lI;:,\"^`'. "
 ASCII_GROUP = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!#$%&'()*+,-./:;\"<=>?@[\\]^_{|}~ "
 FONT_SIZE = 32 #32px
 IMAGE_WIDTH = 16 #32px = (16px,32px)

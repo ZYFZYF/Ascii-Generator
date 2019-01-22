@@ -42,6 +42,6 @@ def fromImageToAsciiImage(image, blockShape=(DEFAULT_BLOCK_HEIGHT, DEFAULT_BLOCK
     return asciiImage
 
 if __name__ == '__main__':
-    image = Image.open('sample1_src.jpg')
+    image = Image.open('sample2_src.jpg')
     file = open('test.txt','w')
-    fromImageToAsciiImage(image).show()
+    fromImageToAsciiImage(image).save('sample2_dst.jpg')
