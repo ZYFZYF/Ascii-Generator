@@ -3,23 +3,28 @@ __author__ = 'ZYF'
 
 import Ascii
 from PIL import Image, ImageDraw, ImageFont
+import numpy
+import datetime
 
-DEFAULT_BLOCK_WIDTH = 10
-DEFAULT_BLOCK_HEIGHT = 20
+DEFAULT_BLOCK_WIDTH = 5
+DEFAULT_BLOCK_HEIGHT = 10
 GREY_ORDERED_ASCII = Ascii.getGreyOrderedAscii()
 
 def fromImageToAsciiArray(image, blockShape=(DEFAULT_BLOCK_HEIGHT, DEFAULT_BLOCK_WIDTH)):
     width, height = image.size
     blockHeight, blockWidth = blockShape
+    blockVerticalCount = int(height / blockHeight)
+    blockhorizontalCount = int(width / blockWidth)
+    imageGreyArray = numpy.array(image.convert('L'))
     asciiResult = ''
-    for j in range(0, int(height / blockHeight)):
-        for i in range(0, int(width / blockWidth)):
-            left = i * blockWidth
-            upper = j * blockHeight
-            right = left + blockWidth
+    for row in range(0,blockVerticalCount):
+        for col in range(0,blockhorizontalCount):
+            upper = row * blockHeight
+            left = col * blockWidth
             lower = upper + blockHeight
-            blockGrey = Ascii.getAverageGreyInImage(image.crop((left,upper,right,lower)))
-            blockGreyRank = int(blockGrey / (256) * len(GREY_ORDERED_ASCII))
+            right = left + blockWidth
+            blockGreyAverage = numpy.mean(imageGreyArray[upper:lower,left:right])
+            blockGreyRank = int(blockGreyAverage / 256 * len(GREY_ORDERED_ASCII))
             asciiResult += GREY_ORDERED_ASCII[blockGreyRank]
         asciiResult += '\n'
     return asciiResult
@@ -27,21 +32,28 @@ def fromImageToAsciiArray(image, blockShape=(DEFAULT_BLOCK_HEIGHT, DEFAULT_BLOCK
 def fromImageToAsciiImage(image, blockShape=(DEFAULT_BLOCK_HEIGHT, DEFAULT_BLOCK_WIDTH)):
     asciiArray = fromImageToAsciiArray(image, blockShape)
     blockHeight, blockWidth = blockShape
-    blockVerticalCount = len(asciiArray.splitlines())
-    blockhorizontalCount = len(asciiArray.splitlines()[0])
+    width, height = image.size
+    blockVerticalCount = int(height / blockHeight)
+    blockhorizontalCount = int(width / blockWidth)
     imageHeight = blockHeight * blockVerticalCount
     imageWidth = blockWidth * blockhorizontalCount
     asciiImage = Image.new('RGB', (imageWidth, imageHeight), (255,255,255))
     drawer = ImageDraw.Draw(asciiImage)
-    for i,line in enumerate(asciiArray.splitlines()):
-        for j,ascii in enumerate(line):
-            leftCorner = [j * blockWidth, i * blockHeight]
-            font = ImageFont.truetype('C:\\Windows\\Fonts\\simsun.ttc', blockHeight, 0)
-            fill = (0, 0, 0)
-            drawer.text(leftCorner, ascii, font=font, fill=fill)
+
+    font = ImageFont.truetype('C:\\Windows\\Fonts\\simsun.ttc', blockHeight, 0)
+    fill = (0, 0, 0)
+    for i,line in enumerate(asciiArray.splitlines()):#draw every line
+        leftCorner = [0, i * blockHeight]
+        drawer.text(leftCorner, line, font=font, fill=fill)
     return asciiImage
 
 if __name__ == '__main__':
-    image = Image.open('sample2_src.jpg')
-    file = open('test.txt','w')
-    fromImageToAsciiImage(image).save('sample2_dst.jpg')
+    starttime = datetime.datetime.now()
+    image = Image.open('sample4_src.jpg')
+    array = fromImageToAsciiArray(image)
+    endtime = datetime.datetime.now()
+    print('Array cost %d.%ds' %((endtime-starttime).seconds, int((endtime-starttime).microseconds/1000)))
+    starttime = endtime
+    fromImageToAsciiImage(image).save('sample4_dst.jpg')
+    endtime = datetime.datetime.now()
+    print('Array cost %d.%ds' %((endtime-starttime).seconds, int((endtime-starttime).microseconds/1000)))
