@@ -104,3 +104,6 @@ venv.bak/
 .mypy_cache/
 
 *.mp4
+*.exe
+*.aac
+*.mp3
