@@ -40,4 +40,4 @@ def fromVideoToAsciiVideo(srcFileName, dstFileName):
     cv2.destroyAllWindows()
 
 if __name__ == '__main__':
-    fromVideoToAsciiVideo('720OP1.mp4', '720OP1_out_out.mp4')
+    fromVideoToAsciiVideo('yuzhou.mp4', 'yuzhou_out.mp4')
