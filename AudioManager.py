@@ -8,7 +8,7 @@ def getAudioFromVideo(srcVideoFileName, dstAudioFileName):
     os.system('ffmpeg -i ' + srcVideoFileName + ' -acodec copy -vn ' + dstAudioFileName)
 
 def getAudioWithVideo(srcVideoFileName, srcAudioFileName, dstVedioFileName):
-    # ffmpeg –i video_file –i audio_file –vcodec copy –acodec copy output_file
+    #ffmpeg –i video_file –i audio_file –vcodec copy –acodec copy output_file
     os.system('ffmpeg -i ' + srcVideoFileName + ' -i ' +  srcAudioFileName +' -vcodec copy -acodec copy ' + dstVedioFileName)
 
 def copyAudioBetweenVideo(srcVideoFileName, dstVideoFileName):
@@ -20,5 +20,5 @@ def copyAudioBetweenVideo(srcVideoFileName, dstVideoFileName):
     os.system('del ' + tmpVideoFileName)
 
 if __name__ == '__main__':
-    copyAudioBetweenVideo('testsrc.mp4', 'testdst.mp4')
+    copyAudioBetweenVideo('yuzhou.mp4', 'yuzhou_out.mp4')
 

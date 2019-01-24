@@ -6,6 +6,7 @@ import ImageConverter
 from PIL import Image
 import numpy
 import datetime
+import AudioManager
 
 
 def fromVideoToAsciiVideo(srcFileName, dstFileName):
@@ -38,6 +39,7 @@ def fromVideoToAsciiVideo(srcFileName, dstFileName):
     src.release()
     dst.release()
     cv2.destroyAllWindows()
+    AudioManager.copyAudioBetweenVideo(srcFileName, dstFileName)
 
 if __name__ == '__main__':
-    fromVideoToAsciiVideo('yuzhou.mp4', 'yuzhou_out.mp4')
+    fromVideoToAsciiVideo('chaopao.mp4', 'chaopao_out.mp4')
