@@ -2,25 +2,34 @@
 <ui version="4.0">
  <class>MainWindow</class>
  <widget class="QMainWindow" name="MainWindow">
+  <property name="enabled">
+   <bool>true</bool>
+  </property>
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1127</width>
-    <height>883</height>
+    <width>960</width>
+    <height>540</height>
    </rect>
   </property>
   <property name="windowTitle">
-   <string>MainWindow</string>
+   <string>AsciiConverter</string>
+  </property>
+  <property name="toolButtonStyle">
+   <enum>Qt::ToolButtonIconOnly</enum>
+  </property>
+  <property name="tabShape">
+   <enum>QTabWidget::Rounded</enum>
   </property>
   <widget class="QWidget" name="centralwidget">
    <widget class="QWidget" name="verticalLayoutWidget">
     <property name="geometry">
      <rect>
-      <x>270</x>
-      <y>200</y>
-      <width>591</width>
-      <height>421</height>
+      <x>100</x>
+      <y>90</y>
+      <width>751</width>
+      <height>321</height>
      </rect>
     </property>
     <layout class="QVBoxLayout" name="verticalLayout">
@@ -33,10 +42,24 @@
      <item>
       <layout class="QHBoxLayout" name="horizontalLayout_3">
        <item>
-        <widget class="QLineEdit" name="src_picture_path_show"/>
+        <widget class="QLabel" name="label">
+         <property name="text">
+          <string> 源文件 </string>
+         </property>
+        </widget>
        </item>
        <item>
-        <widget class="QToolButton" name="src_picture_selector">
+        <widget class="QLineEdit" name="src_file_name_show">
+         <property name="enabled">
+          <bool>true</bool>
+         </property>
+         <property name="readOnly">
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QToolButton" name="src_selector">
          <property name="text">
           <string>...</string>
          </property>
@@ -47,76 +70,28 @@
      <item>
       <widget class="QStackedWidget" name="stackedWidget">
        <widget class="QWidget" name="page">
-        <widget class="QWidget" name="horizontalLayoutWidget_4">
-         <property name="geometry">
-          <rect>
-           <x>0</x>
-           <y>20</y>
-           <width>591</width>
-           <height>23</height>
-          </rect>
-         </property>
-         <layout class="QHBoxLayout" name="horizontalLayout_4">
-          <item>
-           <widget class="QLabel" name="label_3">
-            <property name="text">
-             <string>请设置单个ascii码的大小</string>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QComboBox" name="block_size_selector"/>
-          </item>
-         </layout>
-        </widget>
-        <widget class="QWidget" name="horizontalLayoutWidget_5">
-         <property name="geometry">
-          <rect>
-           <x>0</x>
-           <y>120</y>
-           <width>589</width>
-           <height>21</height>
-          </rect>
-         </property>
-         <layout class="QHBoxLayout" name="horizontalLayout_5">
-          <item>
-           <widget class="QLabel" name="label_4">
-            <property name="text">
-             <string>请选择导出格式</string>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QRadioButton" name="txt_selected">
-            <property name="text">
-             <string>文本</string>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QRadioButton" name="picture_selected">
-            <property name="text">
-             <string>图片</string>
-            </property>
-           </widget>
-          </item>
-         </layout>
-        </widget>
         <widget class="QWidget" name="horizontalLayoutWidget">
          <property name="geometry">
           <rect>
            <x>0</x>
-           <y>220</y>
-           <width>589</width>
+           <y>70</y>
+           <width>751</width>
            <height>23</height>
           </rect>
          </property>
          <layout class="QHBoxLayout" name="horizontalLayout">
           <item>
-           <widget class="QLineEdit" name="dst_picture_path_show"/>
+           <widget class="QLabel" name="label_2">
+            <property name="text">
+             <string>目标文件</string>
+            </property>
+           </widget>
           </item>
           <item>
-           <widget class="QToolButton" name="dst_picture_selector">
+           <widget class="QLineEdit" name="dst_file_name_show"/>
+          </item>
+          <item>
+           <widget class="QToolButton" name="dst_selector">
             <property name="text">
              <string>...</string>
             </property>
@@ -124,49 +99,100 @@
           </item>
          </layout>
         </widget>
-        <widget class="QWidget" name="horizontalLayoutWidget_2">
+        <widget class="QPushButton" name="start_button">
+         <property name="geometry">
+          <rect>
+           <x>300</x>
+           <y>130</y>
+           <width>151</width>
+           <height>28</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string>开始渲染</string>
+         </property>
+        </widget>
+        <widget class="QProgressBar" name="progress_show">
          <property name="geometry">
           <rect>
            <x>0</x>
-           <y>290</y>
-           <width>589</width>
+           <y>200</y>
+           <width>751</width>
            <height>23</height>
           </rect>
          </property>
-         <layout class="QHBoxLayout" name="horizontalLayout_2">
-          <item>
-           <widget class="QLineEdit" name="dst_txt_path_show"/>
-          </item>
-          <item>
-           <widget class="QToolButton" name="dst_txt_selector">
-            <property name="text">
-             <string>...</string>
-            </property>
-           </widget>
-          </item>
-         </layout>
+         <property name="value">
+          <number>0</number>
+         </property>
+         <property name="invertedAppearance">
+          <bool>false</bool>
+         </property>
+        </widget>
+        <widget class="QLabel" name="label_5">
+         <property name="geometry">
+          <rect>
+           <x>40</x>
+           <y>240</y>
+           <width>731</width>
+           <height>16</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string>请注意：现在还不知道开始任务后取消或者暂停，如若想取消，自行叉掉该应用程序_(:з」∠)_</string>
+         </property>
+        </widget>
+        <widget class="QLabel" name="label_3">
+         <property name="geometry">
+          <rect>
+           <x>80</x>
+           <y>20</y>
+           <width>182</width>
+           <height>21</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string>单个字符大小</string>
+         </property>
+        </widget>
+        <widget class="QComboBox" name="block_size_selector">
+         <property name="geometry">
+          <rect>
+           <x>210</x>
+           <y>20</y>
+           <width>81</width>
+           <height>21</height>
+          </rect>
+         </property>
+         <property name="editable">
+          <bool>false</bool>
+         </property>
+        </widget>
+        <widget class="QLabel" name="label_4">
+         <property name="geometry">
+          <rect>
+           <x>380</x>
+           <y>20</y>
+           <width>111</width>
+           <height>21</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string>是否输出为彩色</string>
+         </property>
+        </widget>
+        <widget class="QComboBox" name="color_selector">
+         <property name="geometry">
+          <rect>
+           <x>530</x>
+           <y>20</y>
+           <width>81</width>
+           <height>21</height>
+          </rect>
+         </property>
         </widget>
        </widget>
        <widget class="QWidget" name="page_2"/>
       </widget>
-     </item>
-     <item>
-      <layout class="QHBoxLayout" name="horizontalLayout_6">
-       <item>
-        <widget class="QPushButton" name="start_button">
-         <property name="text">
-          <string>确定</string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QPushButton" name="end_button">
-         <property name="text">
-          <string>关闭</string>
-         </property>
-        </widget>
-       </item>
-      </layout>
      </item>
     </layout>
    </widget>
@@ -176,7 +202,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1127</width>
+     <width>960</width>
      <height>26</height>
     </rect>
    </property>

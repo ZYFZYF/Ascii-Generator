@@ -13,11 +13,11 @@ def getAudioWithVideo(srcVideoFileName, srcAudioFileName, dstVedioFileName):
 
 def copyAudioBetweenVideo(srcVideoFileName, dstVideoFileName):
     tmpVideoFileName = dstVideoFileName.split('.')[0] + '_without_audio.' + dstVideoFileName.split('.')[1]
-    os.system('rename ' + dstVideoFileName + ' ' + tmpVideoFileName)
+    os.rename(dstVideoFileName, tmpVideoFileName)
     tmpAudioFileName = srcVideoFileName.split('.')[0] + '.aac'
     getAudioFromVideo(srcVideoFileName, tmpAudioFileName)
     getAudioWithVideo(tmpVideoFileName, tmpAudioFileName, dstVideoFileName)
-    os.system('del ' + tmpVideoFileName)
+    os.remove(tmpVideoFileName)
 
 if __name__ == '__main__':
     copyAudioBetweenVideo('yuzhou.mp4', 'yuzhou_out.mp4')
