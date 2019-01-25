@@ -42,4 +42,4 @@ def fromVideoToAsciiVideo(srcFileName, dstFileName):
     AudioManager.copyAudioBetweenVideo(srcFileName, dstFileName)
 
 if __name__ == '__main__':
-    fromVideoToAsciiVideo('chaopao.mp4', 'chaopao_out.mp4')
+    fromVideoToAsciiVideo('终将OP.mp4', '终将OP_out.mp4')
