@@ -13,18 +13,27 @@ from threading import Thread
 ALL_SRC_FILE_TYPE = '图片(*.jpg;*.png);;视频(*.mp4;*.avi;*.mov;*.wmv;*.flv;*.rmvb)'
 PICTURE_DST_FILE_TYPE = '图片(*.jpg;*.png);;文本文件(*.txt)'
 
-VIDEO_FILE_SUFFIX = {'mp4', 'avi', 'mov', 'wmv', 'flv', 'rmvb'}
-PICTURE_FILE_SUFFIX = {'jpg', 'png'}
-TEXT_FILE_SUFFIX = {'txt'}
+VIDEO_FILE_SUFFIX = {'.mp4', '.avi', '.mov', '.wmv', '.flv', '.rmvb'}
+PICTURE_FILE_SUFFIX = {'.jpg', '.png'}
+TEXT_FILE_SUFFIX = {'.txt'}
 
 def isVideo(fileName):
-    return os.path.isfile(fileName) and os.path.splitext(fileName)[1] in VIDEO_FILE_SUFFIX
+    try:
+        return os.path.splitext(fileName)[1] in VIDEO_FILE_SUFFIX
+    except:
+        return False
 
 def isPicture(fileName):
-    return os.path.isfile(fileName) and os.path.splitext(fileName)[1] in PICTURE_FILE_SUFFIX
+    try:
+        return os.path.splitext(fileName)[1] in PICTURE_FILE_SUFFIX
+    except:
+        return False
 
 def isText(fileName):
-    return os.path.isfile(fileName) and os.path.splitext(fileName)[1] in TEXT_FILE_SUFFIX
+    try:
+        return os.path.splitext(fileName)[1] in TEXT_FILE_SUFFIX
+    except:
+        return False
 
 class MyWindow(QMainWindow, Ui_MainWindow):
     blockSize = 5
@@ -59,10 +68,12 @@ class MyWindow(QMainWindow, Ui_MainWindow):
         self.videoConverter.getNewTasks.connect(self.progress_show.setMaximum)
         self.videoConverter.setNowTask.connect(self.progress_show.setValue)
         self.videoConverter.finishTask.connect(self.finishTask)
+        self.videoConverter.describeTask.connect(self.process_show.setText)
 
         self.imageConverter.getNewTasks.connect(self.progress_show.setMaximum)
         self.imageConverter.setNowTask.connect(self.progress_show.setValue)
         self.imageConverter.finishTask.connect(self.finishTask)
+        self.imageConverter.describeTask.connect(self.process_show.setText)
 
         window_pale = QtGui.QPalette()
         window_pale.setBrush(self.backgroundRole(), QtGui.QBrush(QtGui.QPixmap("bg.png")))
@@ -96,7 +107,7 @@ class MyWindow(QMainWindow, Ui_MainWindow):
                                                      ALL_SRC_FILE_TYPE)
         if srcFileName:
             self.src_file_name_show.setText(srcFileName)
-            dstFileName = os.path.join(os.path.splitext(srcFileName)[0] + '_ascii.', os.path.splitext(srcFileName)[1])
+            dstFileName = os.path.splitext(srcFileName)[0] + '_ascii'+ os.path.splitext(srcFileName)[1]
             self.dst_file_name_show.setText(dstFileName)
             self.progress_show.setMaximum(100)
             self.progress_show.setValue(0)
@@ -118,8 +129,8 @@ class MyWindow(QMainWindow, Ui_MainWindow):
 
     def operateSelect(self):
         if(self.convertThread.is_alive()):
-            self.videoConverter.setStop(True)
-            self.imageConverter.setStop(True)
+            self.videoConverter.cancel()
+            self.imageConverter.cancel()
         if self.operate_button.text() == '开始':
             self.operate_button.setText('取消')
             self.convertImage()

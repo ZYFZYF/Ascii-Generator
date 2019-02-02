@@ -27,9 +27,9 @@
     <property name="geometry">
      <rect>
       <x>100</x>
-      <y>90</y>
+      <y>110</y>
       <width>751</width>
-      <height>321</height>
+      <height>371</height>
      </rect>
     </property>
     <layout class="QVBoxLayout" name="verticalLayout">
@@ -175,6 +175,22 @@
            <width>81</width>
            <height>21</height>
           </rect>
+         </property>
+        </widget>
+        <widget class="QLabel" name="process_show">
+         <property name="geometry">
+          <rect>
+           <x>190</x>
+           <y>270</y>
+           <width>381</width>
+           <height>16</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string/>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignCenter</set>
          </property>
         </widget>
        </widget>
