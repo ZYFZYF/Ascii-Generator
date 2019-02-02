@@ -113,3 +113,4 @@ build/
 dist/
 .idea/
 .vs/
+*.dll
