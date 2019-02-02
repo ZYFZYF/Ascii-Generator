@@ -18,13 +18,13 @@ PICTURE_FILE_SUFFIX = {'jpg', 'png'}
 TEXT_FILE_SUFFIX = {'txt'}
 
 def isVideo(fileName):
-    return fileName.find('.')>=0 and fileName.split('.')[1] in VIDEO_FILE_SUFFIX
+    return os.path.isfile(fileName) and os.path.splitext(fileName)[1] in VIDEO_FILE_SUFFIX
 
 def isPicture(fileName):
-    return fileName.find('.')>=0 and fileName.split('.')[1] in PICTURE_FILE_SUFFIX
+    return os.path.isfile(fileName) and os.path.splitext(fileName)[1] in PICTURE_FILE_SUFFIX
 
 def isText(fileName):
-    return fileName.find('.')>=0 and fileName.split('.')[1] in TEXT_FILE_SUFFIX
+    return os.path.isfile(fileName) and os.path.splitext(fileName)[1] in TEXT_FILE_SUFFIX
 
 class MyWindow(QMainWindow, Ui_MainWindow):
     blockSize = 5
@@ -96,7 +96,7 @@ class MyWindow(QMainWindow, Ui_MainWindow):
                                                      ALL_SRC_FILE_TYPE)
         if srcFileName:
             self.src_file_name_show.setText(srcFileName)
-            dstFileName = os.path.splitext(srcFileName)[0] + '_ascii.' + srcFileName.split('.')[1]
+            dstFileName = os.path.join(os.path.splitext(srcFileName)[0] + '_ascii.', os.path.splitext(srcFileName)[1])
             self.dst_file_name_show.setText(dstFileName)
             self.progress_show.setMaximum(100)
             self.progress_show.setValue(0)
@@ -104,7 +104,7 @@ class MyWindow(QMainWindow, Ui_MainWindow):
     def selectDst(self):
         defaultPath = self.getDefaultPath(self.dstFileName)
         if isVideo(self.srcFileName):
-            fileType = '视频(*.' + self.srcFileName.split('.')[1] + ')'
+            fileType = '视频(*.' + os.path.splitext(self.srcFileName)[1] + ')'
         else:
             if isPicture(self.srcFileName):
                 fileType = PICTURE_DST_FILE_TYPE
