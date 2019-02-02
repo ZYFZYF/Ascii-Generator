@@ -108,3 +108,8 @@ venv.bak/
 *.aac
 *.mp3
 *.dll
+imageformats/
+build/
+dist/
+.idea/
+.vs/

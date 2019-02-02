@@ -4,11 +4,11 @@ __author__ = 'ZYF'
 import sys
 import os
 from PyQt5.QtWidgets import QApplication, QMainWindow, QFileDialog, QMessageBox, QProgressDialog
+from PyQt5.QtGui import QIcon
 from mainWindow import *
 from VideoConverter import *
 from ImageConverter import *
 from threading import Thread
-
 
 ALL_SRC_FILE_TYPE = '图片(*.jpg;*.png);;视频(*.mp4;*.avi;*.mov;*.wmv;*.flv;*.rmvb)'
 PICTURE_DST_FILE_TYPE = '图片(*.jpg;*.png);;文本文件(*.txt)'
@@ -47,7 +47,6 @@ class MyWindow(QMainWindow, Ui_MainWindow):
     def __init__(self, parent=None):
         super(MyWindow, self).__init__(parent)
         self.setupUi(self)
-
         self.src_selector.clicked.connect(self.selectSrc)
         self.dst_selector.clicked.connect(self.selectDst)
 
@@ -75,11 +74,13 @@ class MyWindow(QMainWindow, Ui_MainWindow):
         self.imageConverter.finishTask.connect(self.finishTask)
         self.imageConverter.describeTask.connect(self.process_show.setText)
 
-        window_pale = QtGui.QPalette()
-        window_pale.setBrush(self.backgroundRole(), QtGui.QBrush(QtGui.QPixmap("bg.png")))
-        self.setPalette(window_pale)
-
         self.setFixedSize(self.width(), self.height())
+        self.setAutoFillBackground(True)
+        #window_pale = QtGui.QPalette()
+        #window_pale.setBrush(self.backgroundRole(), QtGui.QBrush(QtGui.QPixmap("images/bg.png")))
+        #self.setPalette(window_pale)
+        #self.setWindowFlag(QtCore.Qt.FramelessWindowHint)  # 隐藏边框
+        self.process_show.setText('正在准备中...')
 
     def getDefaultPath(self, path):
         if path == '':
@@ -100,6 +101,7 @@ class MyWindow(QMainWindow, Ui_MainWindow):
         self.isColored = False if(currentIndex == 0) else True
 
     def selectSrc(self):
+        self.process_show.setText('正在准备中...')
         defaultPath = self.getDefaultPath(self.srcFileName)
         srcFileName, _ = QFileDialog.getOpenFileName(self,
                                                      "选取要转换的文件",
@@ -113,6 +115,7 @@ class MyWindow(QMainWindow, Ui_MainWindow):
             self.progress_show.setValue(0)
 
     def selectDst(self):
+        self.process_show.setText('正在准备中...')
         defaultPath = self.getDefaultPath(self.dstFileName)
         if isVideo(self.srcFileName):
             fileType = '视频(*.' + os.path.splitext(self.srcFileName)[1] + ')'
@@ -120,6 +123,7 @@ class MyWindow(QMainWindow, Ui_MainWindow):
             if isPicture(self.srcFileName):
                 fileType = PICTURE_DST_FILE_TYPE
             else:
+                self.process_show.setText('请先选择正确的源文件/路径╮(╯▽╰)╭')
                 return
         dstFileName, _ = QFileDialog.getSaveFileName(self,
                                                      "选取目标文件的存储位置",
@@ -156,8 +160,12 @@ class MyWindow(QMainWindow, Ui_MainWindow):
                         self.imageConverter.fromPictureToText(self.srcFileName, self.dstFileName, blockShape, self.isColored)
                         self.progress_show.setValue(100)
                     else:
+                        self.process_show.setText('错误的目标文件格式/路径╮(╯▽╰)╭')
+                        self.finishTask()
                         return
             else:
+                self.process_show.setText('错误的源文件/路径╮(╯▽╰)╭')
+                self.finishTask()
                 return
         self.convertThread.start()
 

@@ -19,6 +19,7 @@ class ImageConverter(Converter):
         blockHeight, blockWidth = blockShape
         blockVerticalCount = int(height / blockHeight)
         blockhorizontalCount = int(width / blockWidth)
+        image = image.convert('RGB')
         r, g, b = image.split()
         imageGreyArray = numpy.array(image.convert('L'))
         imageBlueArray = numpy.array(r)
