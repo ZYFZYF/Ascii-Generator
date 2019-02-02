@@ -5,11 +5,11 @@ import os
 
 def getAudioFromVideo(srcVideoFileName, dstAudioFileName):
     #ffmpeg -i input_file -acodec copy -vn output_file_audio
-    os.system('ffmpeg -i ' + srcVideoFileName + ' -acodec copy -vn ' + dstAudioFileName)
+    os.system('ffmpeg -i ' + srcVideoFileName + ' -acodec copy -vn ' + dstAudioFileName + ' -y')
 
 def getAudioWithVideo(srcVideoFileName, srcAudioFileName, dstVedioFileName):
     #ffmpeg –i video_file –i audio_file –vcodec copy –acodec copy output_file
-    os.system('ffmpeg -i ' + srcVideoFileName + ' -i ' +  srcAudioFileName +' -vcodec copy -acodec copy ' + dstVedioFileName)
+    os.system('ffmpeg -i ' + srcVideoFileName + ' -i ' +  srcAudioFileName +' -vcodec copy -acodec copy ' + dstVedioFileName + ' -y')
 
 def copyAudioBetweenVideo(srcVideoFileName, dstVideoFileName):
     tmpVideoFileName = dstVideoFileName.split('.')[0] + '_without_audio.' + dstVideoFileName.split('.')[1]

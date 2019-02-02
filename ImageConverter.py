@@ -60,6 +60,7 @@ class ImageConverter(Converter):
             for i, line in enumerate(asciiArray.splitlines()):
                 for j, ascii in enumerate(line):
                     if self.isCanceled():
+                        self.setNowTask.emit(0)
                         self.describeTask.emit('您取消了任务╮(╯▽╰)╭')
                         break
                     else:
