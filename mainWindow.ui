@@ -74,7 +74,7 @@
          <property name="geometry">
           <rect>
            <x>0</x>
-           <y>70</y>
+           <y>100</y>
            <width>751</width>
            <height>23</height>
           </rect>
@@ -99,17 +99,17 @@
           </item>
          </layout>
         </widget>
-        <widget class="QPushButton" name="start_button">
+        <widget class="QPushButton" name="operate_button">
          <property name="geometry">
           <rect>
-           <x>300</x>
-           <y>130</y>
-           <width>151</width>
-           <height>28</height>
+           <x>670</x>
+           <y>200</y>
+           <width>80</width>
+           <height>23</height>
           </rect>
          </property>
          <property name="text">
-          <string>开始渲染</string>
+          <string>开始</string>
          </property>
         </widget>
         <widget class="QProgressBar" name="progress_show">
@@ -117,7 +117,7 @@
           <rect>
            <x>0</x>
            <y>200</y>
-           <width>751</width>
+           <width>651</width>
            <height>23</height>
           </rect>
          </property>
@@ -128,24 +128,11 @@
           <bool>false</bool>
          </property>
         </widget>
-        <widget class="QLabel" name="label_5">
-         <property name="geometry">
-          <rect>
-           <x>40</x>
-           <y>240</y>
-           <width>731</width>
-           <height>16</height>
-          </rect>
-         </property>
-         <property name="text">
-          <string>请注意：现在还不知道开始任务后取消或者暂停，如若想取消，自行叉掉该应用程序_(:з」∠)_</string>
-         </property>
-        </widget>
         <widget class="QLabel" name="label_3">
          <property name="geometry">
           <rect>
            <x>80</x>
-           <y>20</y>
+           <y>30</y>
            <width>182</width>
            <height>21</height>
           </rect>
@@ -158,7 +145,7 @@
          <property name="geometry">
           <rect>
            <x>210</x>
-           <y>20</y>
+           <y>30</y>
            <width>81</width>
            <height>21</height>
           </rect>
@@ -171,7 +158,7 @@
          <property name="geometry">
           <rect>
            <x>380</x>
-           <y>20</y>
+           <y>30</y>
            <width>111</width>
            <height>21</height>
           </rect>
@@ -184,7 +171,7 @@
          <property name="geometry">
           <rect>
            <x>530</x>
-           <y>20</y>
+           <y>30</y>
            <width>81</width>
            <height>21</height>
           </rect>

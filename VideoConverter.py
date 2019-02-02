@@ -16,11 +16,17 @@ class VideoConverter(QObject):
 
     getNewTasks = pyqtSignal(int)
     setNowTask = pyqtSignal(int)
+    finishTask = pyqtSignal()
+    stop = False
     imageConverter = ImageConverter()
     def __init__(self):
         super(VideoConverter, self).__init__()
 
+    def setStop(self, stop):
+        self.stop = stop
+
     def fromVideoToAsciiVideo(self, srcFileName, dstFileName, blockShape=(DEFAULT_BLOCK_HEIGHT, DEFAULT_BLOCK_WIDTH), isColored = False):
+        self.setStop = True
         src = cv2.VideoCapture(srcFileName)
         fps = round(src.get(cv2.CAP_PROP_FPS))
         frames = src.get(cv2.CAP_PROP_FRAME_COUNT)
@@ -32,7 +38,7 @@ class VideoConverter(QObject):
         while (True):
             starttime = datetime.datetime.now()
             ret, frame = src.read()
-            if ret:
+            if ret and not self.stop:
                 image = Image.fromarray(cv2.cvtColor(frame, cv2.COLOR_BGR2RGB))
                 asciiImage = self.imageConverter.fromImageToAsciiImage(image, blockShape=blockShape, isColored=isColored)
                 asciiFrame = cv2.cvtColor(numpy.asarray(asciiImage), cv2.COLOR_RGB2BGR)
@@ -50,7 +56,9 @@ class VideoConverter(QObject):
         src.release()
         dst.release()
         cv2.destroyAllWindows()
-        AudioManager.copyAudioBetweenVideo(srcFileName, dstFileName)
+        if not self.stop:
+            AudioManager.copyAudioBetweenVideo(srcFileName, dstFileName)
+        self.finishTask.emit()
 
 if __name__ == '__main__':
     videoConverter = VideoConverter()

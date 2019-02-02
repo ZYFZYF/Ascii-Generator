@@ -14,9 +14,15 @@ GREY_ORDERED_ASCII = Ascii.getGreyOrderedAscii()
 class ImageConverter(QObject):
     getNewTasks = pyqtSignal(int)
     setNowTask = pyqtSignal(int)
+    finishTask = pyqtSignal()
+    stop = False
 
     def __init__(self):
         super(ImageConverter, self).__init__()
+
+    def setStop(self, stop):
+        self.stop = stop
+
 
     def fromImageToAsciiArray(self, image, blockShape=(DEFAULT_BLOCK_HEIGHT, DEFAULT_BLOCK_WIDTH)):
         width, height = image.size
@@ -46,6 +52,7 @@ class ImageConverter(QObject):
         return asciiResult,colorResult
 
     def fromImageToAsciiImage(self, image, blockShape=(DEFAULT_BLOCK_HEIGHT, DEFAULT_BLOCK_WIDTH), isColored = False):
+        self.setStop(False)
         asciiArray, colorArray = self.fromImageToAsciiArray(image, blockShape)
         blockHeight, blockWidth = blockShape
         width, height = image.size
@@ -62,21 +69,24 @@ class ImageConverter(QObject):
             self.getNewTasks.emit(blockhorizontalCount * blockVerticalCount)
             for i, line in enumerate(asciiArray.splitlines()):
                 for j, ascii in enumerate(line):
-                    leftCorner = [j * blockWidth, i * blockHeight]
-                    drawer.text(leftCorner, ascii, font=font, fill=(colorArray[i,j,0], colorArray[i,j,1], colorArray[i,j,2]))
-                    self.setNowTask.emit(i * blockhorizontalCount + j + 1)
+                    if not self.stop:
+                        leftCorner = [j * blockWidth, i * blockHeight]
+                        drawer.text(leftCorner, ascii, font=font, fill=(colorArray[i,j,0], colorArray[i,j,1], colorArray[i,j,2]))
+                        self.setNowTask.emit(i * blockhorizontalCount + j + 1)
         else:
             self.getNewTasks.emit(blockVerticalCount)
             fill = (0, 0, 0)
             for i, line in enumerate(asciiArray.splitlines()):#draw every line
-                leftCorner = [0, i * blockHeight]
-                drawer.text(leftCorner, line, font=font, fill=fill)
-                self.setNowTask.emit(i + 1)
+                if not self.stop:
+                    leftCorner = [0, i * blockHeight]
+                    drawer.text(leftCorner, line, font=font, fill=fill)
+                    self.setNowTask.emit(i + 1)
         return asciiImage
 
     def fromPictureToPicture(self, srcFileName, dstFileName, blockShape=(DEFAULT_BLOCK_HEIGHT, DEFAULT_BLOCK_WIDTH), isColored = False):
         image = Image.open(srcFileName)
         self.fromImageToAsciiImage(image, blockShape, isColored).save(dstFileName)
+        self.finishTask.emit()
 
     def fromPictureToText(self, srcFileName, dstFileName, blockShape=(DEFAULT_BLOCK_HEIGHT, DEFAULT_BLOCK_WIDTH), isColored = False):
         image = Image.open(srcFileName)
@@ -84,3 +94,4 @@ class ImageConverter(QObject):
         asciiResult, _ = self.fromImageToAsciiArray(image, blockShape=(DEFAULT_BLOCK_HEIGHT, DEFAULT_BLOCK_WIDTH))
         file.write(asciiResult)
         file.close()
+        self.finishTask.emit()

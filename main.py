@@ -2,12 +2,13 @@
 __author__ = 'ZYF'
 
 import sys
+import os
 from PyQt5.QtWidgets import QApplication, QMainWindow, QFileDialog, QMessageBox, QProgressDialog
 from mainWindow import *
 from VideoConverter import *
 from ImageConverter import *
 from threading import Thread
-from PIL import Image
+
 
 ALL_SRC_FILE_TYPE = '图片(*.jpg;*.png);;视频(*.mp4;*.avi;*.mov;*.wmv;*.flv;*.rmvb)'
 PICTURE_DST_FILE_TYPE = '图片(*.jpg;*.png);;文本文件(*.txt)'
@@ -32,6 +33,8 @@ class MyWindow(QMainWindow, Ui_MainWindow):
     dstFileName = ''
     videoConverter = VideoConverter()
     imageConverter = ImageConverter()
+    convertThread = Thread()
+
     def __init__(self, parent=None):
         super(MyWindow, self).__init__(parent)
         self.setupUi(self)
@@ -39,7 +42,7 @@ class MyWindow(QMainWindow, Ui_MainWindow):
         self.src_selector.clicked.connect(self.selectSrc)
         self.dst_selector.clicked.connect(self.selectDst)
 
-        self.start_button.clicked.connect(self.convertImage)
+        self.operate_button.clicked.connect(self.operateSelect)
 
         for i in range(1, 61):
             self.block_size_selector.addItem('%dpx'%(i))
@@ -55,9 +58,11 @@ class MyWindow(QMainWindow, Ui_MainWindow):
 
         self.videoConverter.getNewTasks.connect(self.progress_show.setMaximum)
         self.videoConverter.setNowTask.connect(self.progress_show.setValue)
+        self.videoConverter.finishTask.connect(self.finishTask)
 
         self.imageConverter.getNewTasks.connect(self.progress_show.setMaximum)
         self.imageConverter.setNowTask.connect(self.progress_show.setValue)
+        self.imageConverter.finishTask.connect(self.finishTask)
 
         window_pale = QtGui.QPalette()
         window_pale.setBrush(self.backgroundRole(), QtGui.QBrush(QtGui.QPixmap("bg.png")))
@@ -91,8 +96,10 @@ class MyWindow(QMainWindow, Ui_MainWindow):
                                                      ALL_SRC_FILE_TYPE)
         if srcFileName:
             self.src_file_name_show.setText(srcFileName)
-            dstFileName = srcFileName.split('.')[0] + '_ascii.' + srcFileName.split('.')[1]
+            dstFileName = os.path.splitext(srcFileName)[0] + '_ascii.' + srcFileName.split('.')[1]
             self.dst_file_name_show.setText(dstFileName)
+            self.progress_show.setMaximum(100)
+            self.progress_show.setValue(0)
 
     def selectDst(self):
         defaultPath = self.getDefaultPath(self.dstFileName)
@@ -109,21 +116,30 @@ class MyWindow(QMainWindow, Ui_MainWindow):
                                                      fileType)
         self.dst_file_name_show.setText(dstFileName)
 
+    def operateSelect(self):
+        if(self.convertThread.is_alive()):
+            self.videoConverter.setStop(True)
+            self.imageConverter.setStop(True)
+        if self.operate_button.text() == '开始':
+            self.operate_button.setText('取消')
+            self.convertImage()
+        else:
+            self.operate_button.setText('开始')
+
+    def finishTask(self):
+        self.operate_button.setText('开始')
+
     def convertImage(self):
-        self.progress_show.setMaximum(100)
-        self.progress_show.setValue(0)
         print(self.srcFileName, self.dstFileName, self.blockSize, self.isColored)
         blockShape = (self.blockSize * 2, self.blockSize)
         if isVideo(self.srcFileName):
-            p = Thread(target=self.videoConverter.fromVideoToAsciiVideo,
-                       args=(self.srcFileName, self.dstFileName, blockShape, self.isColored))
-            p.start()
+            self.convertThread = Thread(target=self.videoConverter.fromVideoToAsciiVideo,
+                                        args=(self.srcFileName, self.dstFileName, blockShape, self.isColored))
         else:
             if isPicture(self.srcFileName):
                 if isPicture(self.dstFileName):
-                    p = Thread(target = self.imageConverter.fromPictureToPicture,
-                               args=(self.srcFileName, self.dstFileName, blockShape, self.isColored))
-                    p.start()
+                    self.convertThread = Thread(target = self.imageConverter.fromPictureToPicture,
+                                                args=(self.srcFileName, self.dstFileName, blockShape, self.isColored))
                 else:
                     if isText(self.dstFileName):
                         self.imageConverter.fromPictureToText(self.srcFileName, self.dstFileName, blockShape, self.isColored)
@@ -132,6 +148,7 @@ class MyWindow(QMainWindow, Ui_MainWindow):
                         return
             else:
                 return
+        self.convertThread.start()
 
 
 if __name__ == '__main__':
