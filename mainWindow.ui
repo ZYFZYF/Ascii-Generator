@@ -10,7 +10,7 @@
     <x>0</x>
     <y>0</y>
     <width>976</width>
-    <height>400</height>
+    <height>460</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -37,10 +37,10 @@
       <x>50</x>
       <y>70</y>
       <width>871</width>
-      <height>291</height>
+      <height>379</height>
      </rect>
     </property>
-    <layout class="QVBoxLayout" name="verticalLayout" stretch="2,2,2,2,2">
+    <layout class="QVBoxLayout" name="verticalLayout" stretch="2,2,2,2,0,0">
      <property name="spacing">
       <number>40</number>
      </property>
@@ -188,18 +188,24 @@
       </layout>
      </item>
      <item>
-      <layout class="QHBoxLayout" name="horizontalLayout_5">
-       <item>
-        <widget class="QLabel" name="process_show">
-         <property name="text">
-          <string/>
-         </property>
-         <property name="alignment">
-          <set>Qt::AlignCenter</set>
-         </property>
-        </widget>
-       </item>
-      </layout>
+      <widget class="QLabel" name="process_show">
+       <property name="text">
+        <string/>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLabel" name="label_5">
+       <property name="text">
+        <string>作者：一行超人 如有使用上的问题或建议请联系QQ：973446154</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+       </property>
+      </widget>
      </item>
     </layout>
    </widget>
