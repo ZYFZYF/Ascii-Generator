@@ -137,5 +137,4 @@ class Ui_MainWindow(object):
         self.label_2.setText(_translate("MainWindow", "目标文件"))
         self.dst_selector.setText(_translate("MainWindow", "..."))
         self.operate_button.setText(_translate("MainWindow", "开始"))
-        self.label_5.setText(_translate("MainWindow", "作者：一行超人 如有使用上的问题或建议请联系QQ：973446154"))
-
+        self.label_5.setText(_translate("MainWindow", "   _作者：一行超人 如有使用上的问题或建议请联系QQ：973446154"))

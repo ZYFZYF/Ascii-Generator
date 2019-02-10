@@ -26,6 +26,11 @@ class VideoConverter(Converter):
         frames = src.get(cv2.CAP_PROP_FRAME_COUNT)
         self.getNewTasks.emit(frames)
         fourcc = int(src.get(cv2.CAP_PROP_FOURCC))
+        print(('video description: fps = %d, frames = %d, fourcc = %d') % (fps, frames, fourcc))
+        if src.isOpened() == False:
+            self.describeTask.emit('解析视频失败╮(╯▽╰)╭')
+            self.finishTask.emit()
+            return
         dst = ''
         isFirst = True
         count = 0
@@ -58,6 +63,7 @@ class VideoConverter(Converter):
         cv2.destroyAllWindows()
         if not self.isCanceled():
             self.describeTask.emit('正在拷贝音频...')
+            print(srcFileName, dstFileName)
             AudioManager.copyAudioBetweenVideo(srcFileName, dstFileName)
             self.describeTask.emit('转换成功!╮(￣▽￣)╭')
         self.finishTask.emit()

@@ -200,7 +200,7 @@
      <item>
       <widget class="QLabel" name="label_5">
        <property name="text">
-        <string>作者：一行超人 如有使用上的问题或建议请联系QQ：973446154</string>
+        <string>   _作者：一行超人 如有使用上的问题或建议请联系QQ：973446154</string>
        </property>
        <property name="alignment">
         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>

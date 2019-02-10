@@ -4,11 +4,11 @@ __author__ = 'ZYF'
 import sys
 import os
 from PyQt5.QtWidgets import QApplication, QMainWindow, QFileDialog, QMessageBox, QProgressDialog
-from PyQt5.QtGui import QIcon
 from mainWindow import *
 from VideoConverter import *
 from ImageConverter import *
 from threading import Thread
+import chardet
 
 ALL_SRC_FILE_TYPE = '图片(*.jpg;*.png);;视频(*.mp4;*.avi;*.mov;*.wmv;*.flv;*.rmvb)'
 PICTURE_DST_FILE_TYPE = '图片(*.jpg;*.png);;文本文件(*.txt)'
@@ -89,7 +89,10 @@ class MyWindow(QMainWindow, Ui_MainWindow):
             return path
 
     def setSrcFileName(self, srcFileName):
+        print(type(srcFileName), type(self.srcFileName))
         self.srcFileName = srcFileName
+        print(srcFileName,self.srcFileName)
+        print(type(srcFileName), type(self.srcFileName))
 
     def setDstFileName(self, dstFileName):
         self.dstFileName = dstFileName
@@ -107,6 +110,10 @@ class MyWindow(QMainWindow, Ui_MainWindow):
                                                      "选取要转换的文件",
                                                      defaultPath,
                                                      ALL_SRC_FILE_TYPE)
+        print(srcFileName, type(srcFileName), '中文')
+        print(srcFileName.encode('gbk'))
+        print(srcFileName.encode('utf-8'))
+        #print(chardet.detect(srcFileName))
         if srcFileName:
             self.src_file_name_show.setText(srcFileName)
             dstFileName = os.path.splitext(srcFileName)[0] + '_ascii'+ os.path.splitext(srcFileName)[1]
@@ -139,6 +146,7 @@ class MyWindow(QMainWindow, Ui_MainWindow):
             self.operate_button.setText('取消')
             self.convertImage()
         else:
+            self.process_show.setText('正在取消中...')
             self.operate_button.setText('开始')
 
     def finishTask(self):
